@@ -1,0 +1,17 @@
+#AMPL data for "Boomer Global Air Services" Problem (Q6 of Assignment #2)
+
+set J := 1 2 3 4 5;   #set of trips (trip 5 indicates that the airplane recharge the fuel
+                      #at the return airport (KMLI) to meet the minimum leftover fuel requirement.
+
+
+param:     c     r     b     f     p :=   #c is fuel price ($/lb)
+    1    .59     0     0  4800     2      #r is ramp fee ($)
+    2   1.25   800  3350  2000     4      #b is minimum pounds to waive fee (lb)
+    3   1.11   450  2010  5300     8      #f is fuel burn (lb)
+    4    .90   400  2345  3100     8      #p is number of passangers
+    5    .59     0     0     0     0;
+
+
+param BOW := 22200;	#basic operating weight (lb)
+
+param M := 10000;	#big number

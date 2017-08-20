@@ -1,0 +1,7 @@
+#AMPL commands for "Facility Location" Problem (Q4(b) of Assignment #3)
+
+option cplex_options 'presolve=0 mipcuts=0 splitcuts=0 heuristicfreq=-1 mipsearch=1 timing=1 mipdisplay=5 mipinterval=1';
+
+solve;
+display D, sum {j in J} (c[j]*s[j] + f[j]*y[j]);
+display x, y;

@@ -1,0 +1,50 @@
+#AMPL model for "Seasonal Demand" Problem (Q4 of Assignment #1)
+
+reset;
+
+#OPTIONS --------------------------------------------------
+
+option solver cplex;
+
+
+#SETS AND PARAMETERS --------------------------------------
+
+set I;
+
+param d{I} >= 0;
+
+
+#DECISION VARIABLES ---------------------------------------
+
+var x{I} >=0; #number of sandals to be produced each season
+var h{I} >=0; #number of sandals to be held in inventory
+
+
+#OBJECTIVE ------------------------------------------------
+
+minimize cost: sum{i in I} 0.15*h[i];
+
+
+#CONSTRAINTS ----------------------------------------------
+
+subject to 1st_season: h[1] = h[4] + x[1] - d[1];
+subject to 2nd_season: h[2] = h[1] + x[2] - d[2];
+subject to 3rd_season: h[3] = h[2] + x[3] - d[3];
+subject to 4th_season: h[4] = h[3] + x[4] - d[4];
+
+subject to non_negativity {i in I}: x[i] <= 1200;
+
+
+#DATA -----------------------------------------------------
+data models/Q4_seasonalDemand.dat;
+
+
+#COMMANDS -------------------------------------------------
+
+solve;
+
+display x;
+display h;
+
+
+

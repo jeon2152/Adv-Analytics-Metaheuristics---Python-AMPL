@@ -1,0 +1,34 @@
+#AMPL model for "Christmas Party" Problem (Q3(a) of Assignment #2)
+# This solves the problem for an instance of 6 persons
+
+reset;
+
+#options
+options solver cplex;
+
+#sets 
+set I = {1 .. 6};  
+set J = {1 .. 6};  
+
+#parameters
+param b{I,J};
+
+#decision variables
+var x{I,J} >= 0, integer;  
+
+#data
+data Q3_christmasParty.dat;
+
+#objective
+maximize cost: sum {i in I, j in J: i != j} b[i,j] * x[i,j];
+
+
+#constraints
+
+subject to pairness {i in I}: sum {j in J: i != j} x[i,j] = 1;
+subject to equal {i in I, j in J: i!= j}: x[i,j] = x[j,i];
+#commands
+
+solve;
+display {i in I, j in J} x[i,j];
+

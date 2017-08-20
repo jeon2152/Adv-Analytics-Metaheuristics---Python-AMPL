@@ -1,0 +1,12 @@
+#AMPL data for "Seasonal Demand" Problem (Q4 of Assignment #1)
+
+set I := 1 2 3 4;   #set of seasons for sandal production
+
+param:     d :=
+    1   2800
+    2    500
+    3    100
+    4    850;
+
+
+

@@ -1,0 +1,73 @@
+#AMPL model for "Boomer Global Air Services" Problem (Q6 of Assignment #2)
+
+reset;
+
+#OPTIONS ------------------------------------------------
+
+option solver cplex;
+
+
+#SETS AND PARAMETERS ------------------------------------
+
+set J;			#set of trips
+
+param c{J} >=0;		#fuel price ($/lb)
+param r{J} >=0;		#ramp fee ($)
+param b{J} >=0;		#minimum pounds to waive fee (lb)
+param f{J} >=0;		#fuel burn (lb)
+param p{J} >=0;		#number of passangers
+
+param BOW >= 0;		#basic operating weight (lb)
+
+param M >= 0;		#big number
+
+
+#DECISION VARIABLES --------------------------------------
+
+var x{J} >=0;			#fuel to be loaded for trip j (lb)
+var y{J} >=0, binary;	#factor to decide whether the airplane pays ramp fee or not
+var I{J} >=0;			#fuel inventory left from each trip (lb)
+
+
+#OBJECTIVE -----------------------------------------------
+
+minimize cost: sum{j in J} (c[j]*x[j] + r[j]*y[j]);
+
+
+#CONSTRAINTS (Ramp Fee) ----------------------------------
+
+subject to upper_bound {j in J}: x[j] <= M*(1-y[j]) + b[j];
+subject to lower_bound {j in J}: x[j] >= b[j]*(1-y[j]);
+
+
+#CONSTRAINTS (Weight) ------------------------------------
+
+subject to ramp_weight {j in {1 .. 4}}: 		BOW + 200*p[j] + I[j] + x[j] <= 36400;
+subject to landing_weight {j in {1 .. 4}}:		BOW + 200*p[j] + I[j+1] <= 31800;
+subject to fuel_tank_capacity {j in {1 .. 4}}:	I[j] + x[j] <= 13000;
+
+subject to inventory {j in {1 .. 4}}:	I[j+1] = x[j] + I[j] - f[j];
+
+# TANKERING OPTION
+subject to landing_min {j in J}:		I[j] >= 2400;	#with tankering
+#subject to landing_min {j in {2,3,4}}:	I[j] = 2400;	#without tankering
+
+subject to ramp_min:					I[1] = 7000;
+subject to fuel_min:					I[5] + x[5] >= I[1];
+
+
+#CONSTRAINT FOR PROBLEM (b) -------------------------------
+subject to BGAS_requirement {j in J}:	x[j] >= 670;	#gas must be bought at least 100 gals (= 670 lb)
+
+
+#DATA -----------------------------------------------------
+data Q6_airServices.dat;
+
+
+#COMMANDS -------------------------------------------------
+
+solve;
+
+display x;
+display y;
+display cost;

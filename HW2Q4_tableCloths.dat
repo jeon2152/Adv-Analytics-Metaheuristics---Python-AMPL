@@ -1,0 +1,60 @@
+#AMPL data for "INFORMS Annual Meeting and the Demand for Clean Table Cloths" Problem (Q4 of Assignment #2)
+
+#AMPL model: use MCNFP.txt
+#note: default arc costs and lower bounds are 0
+#      default arc upper bounds are infinity
+#      default node requirements are 0
+
+
+set NODES := PUR		#purchase node
+	     c1 c2 c3 c4 c5	#clean table cloth nodes from day 1 to day 5
+	     d1 d2 d3 d4 d5;	#dirty table cloth nodes for laundering from day 1 to day 5
+
+
+set ARCS := (PUR, *) c1 c2 c3 c4 c5
+
+	    (c1, d1) (c2, d2) (c3, d3) (c4, d4) (c5, d5)
+
+	    (d1, *) c2 c3 c4
+	    (d2, *) c3 c4 c5
+	    (d3, *) c4 c5
+	    (d4, *) c5
+
+	    (d1, d2) (d2, d3) (d3, d4) (d4, d5)
+
+	    (d5, PUR);
+
+
+param u := 
+	    [c1, d1] 400
+	    [c2, d2] 375
+	    [c3, d3] 515
+	    [c4, d4] 395
+	    [c5, d5] 620
+
+	    [d1, c4] 20
+	    [d2, c5] 20;
+
+
+param l := 
+	    [c1, d1] 400
+	    [c2, d2] 375
+	    [c3, d3] 515
+	    [c4, d4] 395
+	    [c5, d5] 620;
+
+
+param c :=
+	    [PUR, *] c1 8   c2 8   c3 8   c4 8   c5 8
+
+	    [d1, *] c2 3.75   c3 1.25   c4 0.75
+	    [d2, *] c3 3.75   c4 1.25   c5 0.75
+	    [d3, *] c4 3.75   c5 1.25
+	    [d4, *] c5 3.75;
+
+
+
+
+
+
+

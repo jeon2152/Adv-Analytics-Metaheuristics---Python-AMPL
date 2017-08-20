@@ -1,0 +1,16 @@
+#AMPL data for "Gizmos and Gadgets" Problem (Q3 of Assignment #3)
+
+set I := 1 2 3 4;     #set of suppliers
+set J := 1 2 3;	      #set of price options for WOW
+set K := 1 2 3 4;     #set of binary variable indicators
+set L := 1 2 3 4 5;   #set of demands
+
+
+param d:=
+    1	17000
+    2	18000
+    3   19000
+    4	28000
+    5	32000;
+
+param F := 15000;	#fixed cost when buying from WU

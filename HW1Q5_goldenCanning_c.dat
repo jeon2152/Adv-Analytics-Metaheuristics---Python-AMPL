@@ -1,0 +1,13 @@
+#AMPL data for "Golden Canning Co" Problem (Q5(c) of Assignment #1)
+
+set I := 1 2 3;		#set of tomato products {canned whole, juice, paste}
+set J := 1 2;		#set of tomato grades {A, B}
+
+param:     s,    m,   c,      d :=	#s = sales price
+    1   4.00  1.48   18  800000		#m = marginal profit before tomato cost
+    2   4.50  1.32   20   50000		#c = pounds per case
+    3   3.80  1.85   25   80000;	#d = demand forecast
+
+param A := 600000;		#pounds of A-grade tomatoes
+param B := 2400000;		#pounds of B-grade tomatoes
+param PURCHASE := 180000;	#total purchase cost

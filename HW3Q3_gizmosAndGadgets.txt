@@ -1,0 +1,64 @@
+#AMPL model for "Gizmos and Gadgets" Problem (Q3 of Assignment #3)
+
+reset;
+
+#OPTIONS ------------------------------------------------
+
+option solver cplex;
+
+
+#SETS AND PARAMETERS ------------------------------------
+
+set I;			#set of suppliers
+set J;			#set of price options for WOW
+set K;			#set of binary variable indicators
+set L;			#set of demands
+
+param d{L} >=0;		#demands
+
+param F >= 0;		#fixed cost when buying from WU
+
+
+#DECISION VARIABLES --------------------------------------
+
+var x{I} >=0;		#number of widgets to buy
+var y{K} >=0, binary;	#factor to decide whether the number of widgets are chosen
+var dt{J} >=0;		#number range of widgets from WOW
+
+
+#OBJECTIVE -----------------------------------------------
+
+minimize cost: 4.25*x[1] + 3.15*x[2] + 1.90*x[3]+F*y[2] + 5.50*dt[1]+3.50*dt[2]+2.00*dt[3];
+
+
+#CONSTRAINTS ---------------------------------------------
+
+subject to wii_availability: 	x[1] <= 10000;
+
+subject to wrs_limit1:		7500*y[1] <= x[2];
+subject to wrs_limit2:		x[2] <= 15000*y[1];
+
+subject to wu_fixed_fee:	x[3] <= 9000*y[2];
+
+subject to wow_price_option11:	5000*y[3] <= dt[1];
+subject to wow_price_option12:	dt[1] <= 5000;
+subject to wow_price_option21:	7500*y[4] <= dt[2];
+subject to wow_price_option22:	dt[2] <= 7500*y[3];
+subject to wow_price_option31:	dt[3] <= 12500*y[4];
+
+subject to wow_price_optionAll:	x[4] = dt[1]+dt[2]+dt[3];
+
+subject to demand: 		sum {i in I} x[i] = d[5];
+
+
+#DATA -----------------------------------------------------
+data Q3_gizmosAndGadgets.dat;
+
+
+#COMMANDS -------------------------------------------------
+
+solve;
+
+display x;
+display dt;
+display cost;
