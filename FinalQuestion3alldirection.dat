@@ -1,0 +1,41 @@
+#DSA 5113 Advanced Analytics and Metaheuristics
+#Final Exam
+#Student Name: Jiwon Jeon
+#Student OUID: 113102152
+ 
+#AMPL data for Question 3: Power Generation
+
+#AMPL model: use NCNFP.txt
+#note: default arc lower bounds are 0
+#      default art upper bounds are infinity
+
+
+set NODES := g1 g2 g3		#power generating points
+	     c1 c2 c3 dummy;	#power consumption points
+
+
+set ARCS := (g1, *) c1 c2 c3 dummy
+	    (g2, *) c1 c2 c3 dummy
+	    (g3, *) c1 c2 c3 dummy
+
+	    (c1, *) g1 g2 g3
+	    (c2, *) g1 g2 g3
+	    (c3, *) g1 g2 g3;
+
+
+param b := g1 100
+	   g2 60
+	   g3 80
+	   c1 -35
+	   c2 -50
+	   c3 -60
+	   dummy -95;
+
+
+param c := [g1, *] c1 26     c2 26     c3 26     dummy 0
+	   [g2, *] c1 24.5   c2 24.5   c3 24.5   dummy 0
+	   [g3, *] c1 32     c2 32     c3 32     dummy 0
+
+	   [c1, *] g1 11     g2 11     g3 11
+	   [c2, *] g1 11     g2 11     g3 11
+	   [c3, *] g1 11     g2 11     g3 11;
